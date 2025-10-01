@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn German Words</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .menu-screen {
+            text-align: center;
+        }
+
+        .language-selection, .timer-selection {
+            margin-bottom: 40px;
+        }
+
+        .lang-title, .timer-title, .category-title {
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .lang-buttons, .timer-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn, .timer-btn {
+            background: white;
+            border: 3px solid #ddd;
+            border-radius: 15px;
+            padding: 20px 40px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 150px;
+        }
+
+        .lang-btn:hover, .timer-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .lang-btn.selected, .timer-btn.selected {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .level-selection {
+            margin-top: 40px;
+        }
+
+        .category-section {
+            margin-bottom: 30px;
+        }
+
+        .category-header {
+            font-size: 1.5em;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+        }
+
+        .level-grid {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            margin-bottom: 20px;
+        }
+
+        .level-btn {
+            background: white;
+            color: #333;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .level-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+
+        .level-btn.beginner {
+            border-left: 5px solid #56ab2f;
+        }
+
+        .level-btn.elementary {
+            border-left: 5px solid #0BA360;
+        }
+
+        .level-btn.intermediate {
+            border-left: 5px solid #f09819;
+        }
+
+        .level-btn.advanced {
+            border-left: 5px solid #cb2d3e;
+        }
+
+        .level-btn.expert {
+            border-left: 5px solid #8E2DE2;
+        }
+
+        .level-name {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .level-desc {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .score-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .timer-display {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .timer-display.warning {
+            color: #ff512f;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .quiz-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .german-word {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .option-btn.correct {
+            background: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+
+        .option-btn.incorrect {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .next-btn, .menu-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto 0;
+            transition: all 0.3s;
+        }
+
+        .next-btn:hover, .menu-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .feedback {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            min-height: 30px;
+        }
+
+        .feedback.correct {
+            color: #4caf50;
+        }
+
+        .feedback.incorrect {
+            color: #f44336;
+        }
+
+        .restart-btn {
+            background: #764ba2;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            cursor: pointer;
+            display: inline-block;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+
+        .restart-btn:hover {
+            background: #653a8a;
+            transform: translateY(-2px);
+        }
+
+        .final-score {
+            text-align: center;
+            font-size: 1.5em;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🇩🇪 Deutsch Quiz</h1>
+        <p class="subtitle">Learn German Vocabulary</p>
+
+        <!-- Menu Screen -->
+        <div id="menu-screen" class="menu-screen">
+            <div class="language-selection">
+                <div class="lang-title">Choose Your Language / اختر لغتك</div>
+                <div class="lang-buttons">
+                    <button class="lang-btn selected" id="lang-english">
+                        🇬🇧 English
+                    </button>
+                    <button class="lang-btn" id="lang-arabic">
+                        🇸🇦 العربية
+                    </button>
+                </div>
+            </div>
+
+            <div class="timer-selection">
+                <div class="timer-title">Timer Mode / وضع المؤقت</div>
+                <div class="timer-buttons">
+                    <button class="timer-btn" id="no-timer">
+                        ⏸️ No Timer<br><span style="font-size: 0.8em;">Relaxed</span>
+                    </button>
+                    <button class="timer-btn selected" id="with-timer">
+                        ⏱️ With Timer<br><span style="font-size: 0.8em;">Challenge</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="level-selection">
+                <div class="category-title">Select Your Level</div>
+                
+                <!-- BEGINNER CATEGORY -->
+                <div class="category-section">
+                    <div class="category-header">🌱 BEGINNER</div>
+                    <div class="level-grid">
+                        <button class="level-btn beginner" data-level="beginner-1">
+                            <div class="level-name">Level 1: Basic Greetings</div>
+                            <div class="level-desc">8 words</div>
+                        </button>
+                        <button class="level-btn beginner" data-level="beginner-2">
+                            <div class="level-name">Level 2: Essential Words</div>
+                            <div class="level-desc">8 words</div>
+                        </button>
+                        <button class="level-btn beginner" data-level="beginner-3">
+                            <div class="level-name">Level 3: Numbers 1-10</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn beginner" data-level="beginner-4">
+                            <div class="level-name">Level 4: Family Members</div>
+                            <div class="level-desc">8 words</div>
+                        </button>
+                        <button class="level-btn beginner" data-level="beginner-5">
+                            <div class="level-name">Level 5: Pronouns & Verbs</div>
+                            <div class="level-desc">8 words</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ELEMENTARY CATEGORY -->
+                <div class="category-section">
+                    <div class="category-header">📚 ELEMENTARY</div>
+                    <div class="level-grid">
+                        <button class="level-btn elementary" data-level="elementary-1">
+                            <div class="level-name">Level 1: Colors</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn elementary" data-level="elementary-2">
+                            <div class="level-name">Level 2: Common Objects</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn elementary" data-level="elementary-3">
+                            <div class="level-name">Level 3: Food & Drinks</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn elementary" data-level="elementary-4">
+                            <div class="level-name">Level 4: Body Parts</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn elementary" data-level="elementary-5">
+                            <div class="level-name">Level 5: Days of Week</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- INTERMEDIATE CATEGORY -->
+                <div class="category-section">
+                    <div class="category-header">🔥 INTERMEDIATE</div>
+                    <div class="level-grid">
+                        <button class="level-btn intermediate" data-level="intermediate-1">
+                            <div class="level-name">Level 1: Action Verbs</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn intermediate" data-level="intermediate-2">
+                            <div class="level-name">Level 2: Common Phrases</div>
+                            <div class="level-desc">8 phrases</div>
+                        </button>
+                        <button class="level-btn intermediate" data-level="intermediate-3">
+                            <div class="level-name">Level 3: Places & Locations</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn intermediate" data-level="intermediate-4">
+                            <div class="level-name">Level 4: Time Expressions</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn intermediate" data-level="intermediate-5">
+                            <div class="level-name">Level 5: Weather & Seasons</div>
+                            <div class="level-desc">11 words</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ADVANCED CATEGORY -->
+                <div class="category-section">
+                    <div class="category-header">⚡ ADVANCED</div>
+                    <div class="level-grid">
+                        <button class="level-btn advanced" data-level="advanced-1">
+                            <div class="level-name">Level 1: Shopping & Money</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn advanced" data-level="advanced-2">
+                            <div class="level-name">Level 2: Work & Education</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn advanced" data-level="advanced-3">
+                            <div class="level-name">Level 3: Travel & Transport</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn advanced" data-level="advanced-4">
+                            <div class="level-name">Level 4: Hobbies & Activities</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn advanced" data-level="advanced-5">
+                            <div class="level-name">Level 5: Abstract Concepts</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- EXPERT CATEGORY -->
+                <div class="category-section">
+                    <div class="category-header">🎓 EXPERT</div>
+                    <div class="level-grid">
+                        <button class="level-btn expert" data-level="expert-1">
+                            <div class="level-name">Level 1: Positive Emotions</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn expert" data-level="expert-2">
+                            <div class="level-name">Level 2: Negative Emotions</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn expert" data-level="expert-3">
+                            <div class="level-name">Level 3: Descriptive Adjectives</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn expert" data-level="expert-4">
+                            <div class="level-name">Level 4: Complex Verbs</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                        <button class="level-btn expert" data-level="expert-5">
+                            <div class="level-name">Level 5: Advanced Vocabulary</div>
+                            <div class="level-desc">10 words</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden">
+            <div class="score-board">
+                <div class="score-item">
+                    <div class="score-label">Question</div>
+                    <div class="score-value" id="question-number">1/10</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Correct</div>
+                    <div class="score-value" id="correct-score">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Streak</div>
+                    <div class="score-value" id="streak">0</div>
+                </div>
+                <div class="score-item" id="timer-container" style="display: none;">
+                    <div class="score-label">Time</div>
+                    <div class="timer-display" id="timer">15</div>
+                </div>
+            </div>
+
+            <div class="quiz-card" id="quiz-card">
+                <div class="german-word" id="german-word"></div>
+                <div class="options" id="options"></div>
+                <div class="feedback" id="feedback"></div>
+            </div>
+
+            <button class="next-btn" id="next-btn" style="display: none;">Next Question</button>
+            <button class="menu-btn" id="back-menu">Back to Menu</button>
+        </div>
+    </div>
+
+    <script>
+        const vocabulary = {
+            'beginner-1': [
+                { german: "Hallo", english: "Hello", arabic: "مرحبا" },
+                { german: "Tschüss", english: "Goodbye", arabic: "وداعا" },
+                { german: "Guten Morgen", english: "Good morning", arabic: "صباح الخير" },
+                { german: "Guten Tag", english: "Good day", arabic: "نهارك سعيد" },
+                { german: "Gute Nacht", english: "Good night", arabic: "تصبح على خير" },
+                { german: "Auf Wiedersehen", english: "Goodbye (formal)", arabic: "مع السلامة" },
+                { german: "Bis bald", english: "See you soon", arabic: "أراك قريبا" },
+                { german: "Willkommen", english: "Welcome", arabic: "مرحبا بك" }
+            ],
+            'beginner-2': [
+                { german: "Ja", english: "Yes", arabic: "نعم" },
+                { german: "Nein", english: "No", arabic: "لا" },
+                { german: "Danke", english: "Thank you", arabic: "شكرا" },
+                { german: "Bitte", english: "Please/You're welcome", arabic: "من فضلك" },
+                { german: "Entschuldigung", english: "Excuse me/Sorry", arabic: "عذرا" },
+                { german: "Ich", english: "I", arabic: "أنا" },
+                { german: "Du", english: "You", arabic: "أنت" },
+                { german: "Wir", english: "We", arabic: "نحن" }
+            ],
+            'beginner-3': [
+                { german: "Eins", english: "One", arabic: "واحد" },
+                { german: "Zwei", english: "Two", arabic: "اثنان" },
+                { german: "Drei", english: "Three", arabic: "ثلاثة" },
+                { german: "Vier", english: "Four", arabic: "أربعة" },
+                { german: "Fünf", english: "Five", arabic: "خمسة" },
+                { german: "Sechs", english: "Six", arabic: "ستة" },
+                { german: "Sieben", english: "Seven", arabic: "سبعة" },
+                { german: "Acht", english: "Eight", arabic: "ثمانية" },
+                { german: "Neun", english: "Nine", arabic: "تسعة" },
+                { german: "Zehn", english: "Ten", arabic: "عشرة" }
+            ],
+            'beginner-4': [
+                { german: "Die Mutter", english: "Mother", arabic: "الأم" },
+                { german: "Der Vater", english: "Father", arabic: "الأب" },
+                { german: "Der Bruder", english: "Brother", arabic: "الأخ" },
+                { german: "Die Schwester", english: "Sister", arabic: "الأخت" },
+                { german: "Die Oma", english: "Grandma", arabic: "الجدة" },
+                { german: "Der Opa", english: "Grandpa", arabic: "الجد" },
+                { german: "Das Kind", english: "Child", arabic: "الطفل" },
+                { german: "Die Familie", english: "Family", arabic: "العائلة" }
+            ],
+            'beginner-5': [
+                { german: "Er", english: "He", arabic: "هو" },
+                { german: "Sie", english: "She", arabic: "هي" },
+                { german: "Es", english: "It", arabic: "هو/هي (غير عاقل)" },
+                { german: "Sein", english: "To be", arabic: "يكون" },
+                { german: "Haben", english: "To have", arabic: "يملك" },
+                { german: "Ich bin", english: "I am", arabic: "أنا أكون" },
+                { german: "Du bist", english: "You are", arabic: "أنت تكون" },
+                { german: "Ich habe", english: "I have", arabic: "أنا أملك" }
+            ],
+            'elementary-1': [
+                { german: "Rot", english: "Red", arabic: "أحمر" },
+                { german: "Blau", english: "Blue", arabic: "أزرق" },
+                { german: "Grün", english: "Green", arabic: "أخضر" },
+                { german: "Gelb", english: "Yellow", arabic: "أصفر" },
+                { german: "Orange", english: "Orange", arabic: "برتقالي" },
+                { german: "Rosa", english: "Pink", arabic: "وردي" },
+                { german: "Lila", english: "Purple", arabic: "بنفسجي" },
+                { german: "Schwarz", english: "Black", arabic: "أسود" },
+                { german: "Weiß", english: "White", arabic: "أبيض" },
+                { german: "Braun", english: "Brown", arabic: "بني" }
+            ],
+            'elementary-2': [
+                { german: "Das Haus", english: "The house", arabic: "المنزل" },
+                { german: "Der Tisch", english: "The table", arabic: "الطاولة" },
+                { german: "Der Stuhl", english: "The chair", arabic: "الكرسي" },
+                { german: "Das Bett", english: "The bed", arabic: "السرير" },
+                { german: "Die Tür", english: "The door", arabic: "الباب" },
+                { german: "Das Fenster", english: "The window", arabic: "النافذة" },
+                { german: "Das Buch", english: "The book", arabic: "الكتاب" },
+                { german: "Der Stift", english: "The pen", arabic: "القلم" },
+                { german: "Das Telefon", english: "The phone", arabic: "الهاتف" },
+                { german: "Die Tasche", english: "The bag", arabic: "الحقيبة" }
+            ],
+            'elementary-3': [
+                { german: "Das Brot", english: "Bread", arabic: "الخبز" },
+                { german: "Das Wasser", english: "Water", arabic: "الماء" },
+                { german: "Die Milch", english: "Milk", arabic: "الحليب" },
+                { german: "Der Kaffee", english: "Coffee", arabic: "القهوة" },
+                { german: "Der Tee", english: "Tea", arabic: "الشاي" },
+                { german: "Der Apfel", english: "Apple", arabic: "التفاحة" },
+                { german: "Die Banane", english: "Banana", arabic: "الموز" },
+                { german: "Das Ei", english: "Egg", arabic: "البيضة" },
+                { german: "Der Käse", english: "Cheese", arabic: "الجبن" },
+                { german: "Das Fleisch", english: "Meat", arabic: "اللحم" }
+            ],
+            'elementary-4': [
+                { german: "Der Kopf", english: "Head", arabic: "الرأس" },
+                { german: "Das Auge", english: "Eye", arabic: "العين" },
+                { german: "Die Nase", english: "Nose", arabic: "الأنف" },
+                { german: "Der Mund", english: "Mouth", arabic: "الفم" },
+                { german: "Das Ohr", english: "Ear", arabic: "الأذن" },
+                { german: "Die Hand", english: "Hand", arabic: "اليد" },
+                { german: "Der Fuß", english: "Foot", arabic: "القدم" },
+                { german: "Das Bein", english: "Leg", arabic: "الساق" },
+                { german: "Der Arm", english: "Arm", arabic: "الذراع" },
+                { german: "Das Haar", english: "Hair", arabic: "الشعر" }
+            ],
+            'elementary-5': [
+                { german: "Montag", english: "Monday", arabic: "الإثنين" },
+                { german: "Dienstag", english: "Tuesday", arabic: "الثلاثاء" },
+                { german: "Mittwoch", english: "Wednesday", arabic: "الأربعاء" },
+                { german: "Donnerstag", english: "Thursday", arabic: "الخميس" },
+                { german: "Freitag", english: "Friday", arabic: "الجمعة" },
+                { german: "Samstag", english: "Saturday", arabic: "السبت" },
+                { german: "Sonntag", english: "Sunday", arabic: "الأحد" },
+                { german: "Heute", english: "Today", arabic: "اليوم" },
+                { german: "Morgen", english: "Tomorrow", arabic: "غدا" },
+                { german: "Gestern", english: "Yesterday", arabic: "أمس" }
+            ],
+            'intermediate-1': [
+                { german: "Gehen", english: "To go", arabic: "يذهب" },
+                { german: "Kommen", english: "To come", arabic: "يأتي" },
+                { german: "Essen", english: "To eat", arabic: "يأكل" },
+                { german: "Trinken", english: "To drink", arabic: "يشرب" },
+                { german: "Schlafen", english: "To sleep", arabic: "ينام" },
+                { german: "Lesen", english: "To read", arabic: "يقرأ" },
+                { german: "Schreiben", english: "To write", arabic: "يكتب" },
+                { german: "Sprechen", english: "To speak", arabic: "يتكلم" },
+                { german: "Hören", english: "To hear", arabic: "يسمع" },
+                { german: "Sehen", english: "To see", arabic: "يرى" }
+            ],
+            'intermediate-2': [
+                { german: "Wie geht's?", english: "How are you?", arabic: "كيف حالك؟" },
+                { german: "Mir geht's gut", english: "I'm fine", arabic: "أنا بخير" },
+                { german: "Wie heißt du?", english: "What's your name?", arabic: "ما اسمك؟" },
+                { german: "Ich heiße...", english: "My name is...", arabic: "اسمي..." },
+                { german: "Woher kommst du?", english: "Where are you from?", arabic: "من أين أنت؟" },
+                { german: "Ich komme aus...", english: "I come from...", arabic: "أنا من..." },
+                { german: "Wie alt bist du?", english: "How old are you?", arabic: "كم عمرك؟" },
+                { german: "Ich bin ... Jahre alt", english: "I am ... years old", arabic: "عمري ... سنة" }
+            ],
+            'intermediate-3': [
+                { german: "Die Stadt", english: "City", arabic: "المدينة" },
+                { german: "Das Dorf", english: "Village", arabic: "القرية" },
+                { german: "Die Schule", english: "School", arabic: "المدرسة" },
+                { german: "Die Kirche", english: "Church", arabic: "الكنيسة" },
+                { german: "Das Krankenhaus", english: "Hospital", arabic: "المستشفى" },
+                { german: "Der Bahnhof", english: "Train station", arabic: "محطة القطار" },
+                { german: "Der Flughafen", english: "Airport", arabic: "المطار" },
+                { german: "Das Restaurant", english: "Restaurant", arabic: "المطعم" },
+                { german: "Der Supermarkt", english: "Supermarket", arabic: "السوبر ماركت" },
+                { german: "Der Park", english: "Park", arabic: "الحديقة" }
+            ],
+            'intermediate-4': [
+                { german: "Die Uhr", english: "Clock/Watch", arabic: "الساعة" },
+                { german: "Die Stunde", english: "Hour", arabic: "ساعة (زمن)" },
+                { german: "Die Minute", english: "Minute", arabic: "دقيقة" },
+                { german: "Jetzt", english: "Now", arabic: "الآن" },
+                { german: "Später", english: "Later", arabic: "لاحقا" },
+                { german: "Früh", english: "Early", arabic: "مبكرا" },
+                { german: "Spät", english: "Late", arabic: "متأخرا" },
+                { german: "Immer", english: "Always", arabic: "دائما" },
+                { german: "Manchmal", english: "Sometimes", arabic: "أحيانا" },
+                { german: "Nie", english: "Never", arabic: "أبدا" }
+            ],
+            'intermediate-5': [
+                { german: "Das Wetter", english: "Weather", arabic: "الطقس" },
+                { german: "Die Sonne", english: "Sun", arabic: "الشمس" },
+                { german: "Der Regen", english: "Rain", arabic: "المطر" },
+                { german: "Der Schnee", english: "Snow", arabic: "الثلج" },
+                { german: "Der Wind", english: "Wind", arabic: "الرياح" },
+                { german: "Der Frühling", english: "Spring", arabic: "الربيع" },
+                { german: "Der Sommer", english: "Summer", arabic: "الصيف" },
+                { german: "Der Herbst", english: "Autumn", arabic: "الخريف" },
+                { german: "Der Winter", english: "Winter", arabic: "الشتاء" },
+                { german: "Warm", english: "Warm", arabic: "دافئ" },
+                { german: "Kalt", english: "Cold", arabic: "بارد" }
+            ],
+            'advanced-1': [
+                { german: "Das Geld", english: "Money", arabic: "المال" },
+                { german: "Der Euro", english: "Euro", arabic: "اليورو" },
+                { german: "Kaufen", english: "To buy", arabic: "يشتري" },
+                { german: "Verkaufen", english: "To sell", arabic: "يبيع" },
+                { german: "Bezahlen", english: "To pay", arabic: "يدفع" },
+                { german: "Kosten", english: "To cost", arabic: "يكلف" },
+                { german: "Teuer", english: "Expensive", arabic: "غالي" },
+                { german: "Billig", english: "Cheap", arabic: "رخيص" },
+                { german: "Der Preis", english: "Price", arabic: "السعر" },
+                { german: "Die Rechnung", english: "Bill/Invoice", arabic: "الفاتورة" }
+            ],
+            'advanced-2': [
+                { german: "Die Arbeit", english: "Work", arabic: "العمل" },
+                { german: "Der Job", english: "Job", arabic: "الوظيفة" },
+                { german: "Arbeiten", english: "To work", arabic: "يعمل" },
+                { german: "Lernen", english: "To learn", arabic: "يتعلم" },
+                { german: "Studieren", english: "To study", arabic: "يدرس" },
+                { german: "Der Lehrer", english: "Teacher", arabic: "المعلم" },
+                { german: "Der Schüler", english: "Student (school)", arabic: "التلميذ" },
+                { german: "Die Universität", english: "University", arabic: "الجامعة" },
+                { german: "Das Büro", english: "Office", arabic: "المكتب" },
+                { german: "Der Chef", english: "Boss", arabic: "المدير" }
+            ],
+            'advanced-3': [
+                { german: "Reisen", english: "To travel", arabic: "يسافر" },
+                { german: "Das Auto", english: "Car", arabic: "السيارة" },
+                { german: "Der Bus", english: "Bus", arabic: "الحافلة" },
+                { german: "Der Zug", english: "Train", arabic: "القطار" },
+                { german: "Das Flugzeug", english: "Airplane", arabic: "الطائرة" },
+                { german: "Das Fahrrad", english: "Bicycle", arabic: "الدراجة" },
+                { german: "Fahren", english: "To drive/ride", arabic: "يقود" },
+                { german: "Fliegen", english: "To fly", arabic: "يطير" },
+                { german: "Die Reise", english: "Journey/Trip", arabic: "الرحلة" },
+                { german: "Das Ticket", english: "Ticket", arabic: "التذكرة" }
+            ],
+            'advanced-4': [
+                { german: "Das Hobby", english: "Hobby", arabic: "الهواية" },
+                { german: "Der Sport", english: "Sport", arabic: "الرياضة" },
+                { german: "Spielen", english: "To play", arabic: "يلعب" },
+                { german: "Schwimmen", english: "To swim", arabic: "يسبح" },
+                { german: "Laufen", english: "To run", arabic: "يجري" },
+                { german: "Tanzen", english: "To dance", arabic: "يرقص" },
+                { german: "Singen", english: "To sing", arabic: "يغني" },
+                { german: "Kochen", english: "To cook", arabic: "يطبخ" },
+                { german: "Malen", english: "To paint", arabic: "يرسم" },
+                { german: "Die Musik", english: "Music", arabic: "الموسيقى" }
+            ],
+            'advanced-5': [
+                { german: "Die Zeit", english: "Time", arabic: "الوقت" },
+                { german: "Das Leben", english: "Life", arabic: "الحياة" },
+                { german: "Die Liebe", english: "Love", arabic: "الحب" },
+                { german: "Die Freundschaft", english: "Friendship", arabic: "الصداقة" },
+                { german: "Die Wahrheit", english: "Truth", arabic: "الحقيقة" },
+                { german: "Die Freiheit", english: "Freedom", arabic: "الحرية" },
+                { german: "Die Hoffnung", english: "Hope", arabic: "الأمل" },
+                { german: "Der Traum", english: "Dream", arabic: "الحلم" },
+                { german: "Die Idee", english: "Idea", arabic: "الفكرة" },
+                { german: "Das Problem", english: "Problem", arabic: "المشكلة" }
+            ],
+            'expert-1': [
+                { german: "Glücklich", english: "Happy", arabic: "سعيد" },
+                { german: "Fröhlich", english: "Cheerful", arabic: "مرح" },
+                { german: "Zufrieden", english: "Content/Satisfied", arabic: "راض" },
+                { german: "Aufgeregt", english: "Excited", arabic: "متحمس" },
+                { german: "Begeistert", english: "Enthusiastic", arabic: "متحمس جدا" },
+                { german: "Stolz", english: "Proud", arabic: "فخور" },
+                { german: "Dankbar", english: "Grateful", arabic: "ممتن" },
+                { german: "Hoffnungsvoll", english: "Hopeful", arabic: "متفائل" },
+                { german: "Erleichtert", english: "Relieved", arabic: "مرتاح" },
+                { german: "Gelassen", english: "Calm/Relaxed", arabic: "هادئ" }
+            ],
+            'expert-2': [
+                { german: "Traurig", english: "Sad", arabic: "حزين" },
+                { german: "Wütend", english: "Angry", arabic: "غاضب" },
+                { german: "Ängstlich", english: "Anxious/Afraid", arabic: "خائف" },
+                { german: "Nervös", english: "Nervous", arabic: "عصبي" },
+                { german: "Enttäuscht", english: "Disappointed", arabic: "خائب الأمل" },
+                { german: "Frustriert", english: "Frustrated", arabic: "محبط" },
+                { german: "Einsam", english: "Lonely", arabic: "وحيد" },
+                { german: "Müde", english: "Tired", arabic: "متعب" },
+                { german: "Gestresst", english: "Stressed", arabic: "مضغوط" },
+                { german: "Verlegen", english: "Embarrassed", arabic: "محرج" }
+            ],
+            'expert-3': [
+                { german: "Groß", english: "Big/Tall", arabic: "كبير" },
+                { german: "Klein", english: "Small", arabic: "صغير" },
+                { german: "Lang", english: "Long", arabic: "طويل" },
+                { german: "Kurz", english: "Short", arabic: "قصير" },
+                { german: "Alt", english: "Old", arabic: "قديم" },
+                { german: "Neu", english: "New", arabic: "جديد" },
+                { german: "Schön", english: "Beautiful", arabic: "جميل" },
+                { german: "Hässlich", english: "Ugly", arabic: "قبيح" },
+                { german: "Gut", english: "Good", arabic: "جيد" },
+                { german: "Schlecht", english: "Bad", arabic: "سيء" }
+            ],
+            'expert-4': [
+                { german: "Verstehen", english: "To understand", arabic: "يفهم" },
+                { german: "Erklären", english: "To explain", arabic: "يشرح" },
+                { german: "Entscheiden", english: "To decide", arabic: "يقرر" },
+                { german: "Erreichen", english: "To achieve", arabic: "يحقق" },
+                { german: "Verbessern", english: "To improve", arabic: "يحسن" },
+                { german: "Entwickeln", english: "To develop", arabic: "يطور" },
+                { german: "Vergleichen", english: "To compare", arabic: "يقارن" },
+                { german: "Beeinflussen", english: "To influence", arabic: "يؤثر" },
+                { german: "Vermeiden", english: "To avoid", arabic: "يتجنب" },
+                { german: "Untersuchen", english: "To examine", arabic: "يفحص" }
+            ],
+            'expert-5': [
+                { german: "Die Gesundheit", english: "Health", arabic: "الصحة" },
+                { german: "Die Bildung", english: "Education", arabic: "التعليم" },
+                { german: "Die Gesellschaft", english: "Society", arabic: "المجتمع" },
+                { german: "Die Wirtschaft", english: "Economy", arabic: "الاقتصاد" },
+                { german: "Die Umwelt", english: "Environment", arabic: "البيئة" },
+                { german: "Die Politik", english: "Politics", arabic: "السياسة" },
+                { german: "Die Wissenschaft", english: "Science", arabic: "العلم" },
+                { german: "Die Kultur", english: "Culture", arabic: "الثقافة" },
+                { german: "Die Technologie", english: "Technology", arabic: "التكنولوجيا" },
+                { german: "Die Zukunft", english: "Future", arabic: "المستقبل" }
+            ]
+        };
+
+        let currentLanguage = 'english';
+        let currentLevel = 'beginner-1';
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let streak = 0;
+        let quizData = [];
+        let selectedAnswer = null;
+        let totalQuestions = 8;
+        let timerEnabled = true;
+        let timeLeft = 15;
+        let timerInterval = null;
+
+        // Language selection
+        document.getElementById('lang-english').addEventListener('click', function() {
+            currentLanguage = 'english';
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+
+        document.getElementById('lang-arabic').addEventListener('click', function() {
+            currentLanguage = 'arabic';
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+
+        // Timer selection
+        document.getElementById('no-timer').addEventListener('click', function() {
+            timerEnabled = false;
+            document.querySelectorAll('.timer-btn').forEach(btn => btn.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+
+        document.getElementById('with-timer').addEventListener('click', function() {
+            timerEnabled = true;
+            document.querySelectorAll('.timer-btn').forEach(btn => btn.classList.remove('selected'));
+            this.classList.add('selected');
+        });
+
+        // Level selection
+        document.querySelectorAll('.level-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const level = this.getAttribute('data-level');
+                startQuiz(level);
+            });
+        });
+
+        // Back to menu
+        document.getElementById('back-menu').addEventListener('click', backToMenu);
+
+        // Next button
+        document.getElementById('next-btn').addEventListener('click', nextQuestion);
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function startQuiz(level) {
+            currentLevel = level;
+            
+            if (!vocabulary[level]) {
+                alert('Level not found!');
+                return;
+            }
+
+            quizData = shuffleArray([...vocabulary[level]]);
+            totalQuestions = quizData.length;
+            currentQuestion = 0;
+            correctAnswers = 0;
+            streak = 0;
+            
+            document.getElementById('menu-screen').classList.add('hidden');
+            document.getElementById('quiz-screen').classList.remove('hidden');
+            
+            if (timerEnabled) {
+                document.getElementById('timer-container').style.display = 'block';
+            } else {
+                document.getElementById('timer-container').style.display = 'none';
+            }
+            
+            // Reset quiz card HTML structure
+            const quizCard = document.getElementById('quiz-card');
+            quizCard.innerHTML = `
+                <div class="german-word" id="german-word"></div>
+                <div class="options" id="options"></div>
+                <div class="feedback" id="feedback"></div>
+            `;
+            
+            updateScoreboard();
+            showQuestion();
+        }
+
+        function backToMenu() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            document.getElementById('menu-screen').classList.remove('hidden');
+            document.getElementById('quiz-screen').classList.add('hidden');
+        }
+
+        function startTimer() {
+            if (!timerEnabled) return;
+            
+            timeLeft = 15;
+            updateTimerDisplay();
+            
+            if (timerInterval) clearInterval(timerInterval);
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timeOut();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const timerEl = document.getElementById('timer');
+            timerEl.textContent = timeLeft;
+            
+            if (timeLeft <= 5) {
+                timerEl.classList.add('warning');
+            } else {
+                timerEl.classList.remove('warning');
+            }
+        }
+
+        function timeOut() {
+            const current = quizData[currentQuestion];
+            const correctTranslation = current[currentLanguage];
+            
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correctTranslation) {
+                    btn.classList.add('correct');
+                }
+            });
+
+            streak = 0;
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = currentLanguage === 'english' 
+                ? `⏰ Time's up! Correct: ${correctTranslation}` 
+                : `⏰ انتهى الوقت! الصحيح: ${correctTranslation}`;
+            feedback.className = 'feedback incorrect';
+            
+            updateScoreboard();
+            document.getElementById('next-btn').style.display = 'block';
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= quizData.length) {
+                if (timerInterval) clearInterval(timerInterval);
+                showFinalScore();
+                return;
+            }
+
+            selectedAnswer = null;
+            const current = quizData[currentQuestion];
+            
+            const germanWordEl = document.getElementById('german-word');
+            const feedbackEl = document.getElementById('feedback');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (germanWordEl) germanWordEl.textContent = current.german;
+            if (feedbackEl) {
+                feedbackEl.textContent = '';
+                feedbackEl.className = 'feedback';
+            }
+            if (nextBtn) nextBtn.style.display = 'none';
+
+            const correctTranslation = current[currentLanguage];
+            
+            // Get all words from all levels for wrong options
+            const allWords = [];
+            Object.keys(vocabulary).forEach(key => {
+                allWords.push(...vocabulary[key]);
+            });
+            
+            const wrongOptions = allWords
+                .filter(w => w[currentLanguage] !== correctTranslation)
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 3)
+                .map(w => w[currentLanguage]);
+
+            const allOptions = shuffleArray([correctTranslation, ...wrongOptions]);
+
+            const optionsContainer = document.getElementById('options');
+            if (optionsContainer) {
+                optionsContainer.innerHTML = '';
+
+                allOptions.forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = option;
+                    btn.onclick = function() {
+                        selectAnswer(option, correctTranslation);
+                    };
+                    optionsContainer.appendChild(btn);
+                });
+            }
+
+            startTimer();
+        }
+
+        function selectAnswer(selected, correct) {
+            if (selectedAnswer !== null) return;
+
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+
+            selectedAnswer = selected;
+            const buttons = document.querySelectorAll('.option-btn');
+            const feedback = document.getElementById('feedback');
+
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correct) {
+                    btn.classList.add('correct');
+                }
+                if (btn.textContent === selected && selected !== correct) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            if (selected === correct) {
+                correctAnswers++;
+                streak++;
+                feedback.textContent = currentLanguage === 'english' ? '✓ Richtig! (Correct!)' : '✓ صحيح! (Richtig!)';
+                feedback.className = 'feedback correct';
+            } else {
+                streak = 0;
+                feedback.textContent = currentLanguage === 'english' 
+                    ? `✗ Falsch! Correct: ${correct}` 
+                    : `✗ خطأ! الصحيح: ${correct}`;
+                feedback.className = 'feedback incorrect';
+            }
+
+            updateScoreboard();
+            document.getElementById('next-btn').style.display = 'block';
+        }
+
+        function updateScoreboard() {
+            document.getElementById('question-number').textContent = `${currentQuestion + 1}/${quizData.length}`;
+            document.getElementById('correct-score').textContent = correctAnswers;
+            document.getElementById('streak').textContent = streak;
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            showQuestion();
+        }
+
+        function showFinalScore() {
+            const percentage = Math.round((correctAnswers / quizData.length) * 100);
+            let message = '';
+            
+            if (currentLanguage === 'english') {
+                if (percentage === 100) message = 'Perfekt! 🎉';
+                else if (percentage >= 80) message = 'Sehr gut! 👏';
+                else if (percentage >= 60) message = 'Gut gemacht! 👍';
+                else message = 'Keep practicing! 💪';
+            } else {
+                if (percentage === 100) message = 'ممتاز! 🎉';
+                else if (percentage >= 80) message = 'جيد جدا! 👏';
+                else if (percentage >= 60) message = 'أحسنت! 👍';
+                else message = 'واصل التدريب! 💪';
+            }
+
+            const playAgainText = currentLanguage === 'english' ? 'Play Again' : 'العب مرة أخرى';
+            const mainMenuText = currentLanguage === 'english' ? 'Main Menu' : 'القائمة الرئيسية';
+            const resultText = currentLanguage === 'english' 
+                ? 'You got ' + correctAnswers + ' out of ' + quizData.length + ' correct!'
+                : 'لقد أجبت ' + correctAnswers + ' من ' + quizData.length + ' بشكل صحيح!';
+
+            const quizCard = document.getElementById('quiz-card');
+            
+            if (!quizCard) return;
+            
+            // Build HTML string
+            let finalHTML = '<div class="final-score">';
+            finalHTML += '<h2>' + message + '</h2>';
+            finalHTML += '<p style="margin: 20px 0;">' + resultText + '</p>';
+            finalHTML += '<p style="font-size: 3em;">' + percentage + '%</p>';
+            finalHTML += '</div>';
+            
+            quizCard.innerHTML = finalHTML;
+            
+            // Create Play Again button
+            const playAgainBtn = document.createElement('button');
+            playAgainBtn.className = 'restart-btn';
+            playAgainBtn.textContent = playAgainText;
+            playAgainBtn.onclick = function() {
+                const levelToRestart = currentLevel;
+                startQuiz(levelToRestart);
+            };
+            quizCard.appendChild(playAgainBtn);
+            
+            // Create Main Menu button
+            const mainMenuBtn = document.createElement('button');
+            mainMenuBtn.className = 'restart-btn';
+            mainMenuBtn.textContent = mainMenuText;
+            mainMenuBtn.onclick = function() {
+                backToMenu();
+            };
+            quizCard.appendChild(mainMenuBtn);
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (nextBtn) nextBtn.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+                
